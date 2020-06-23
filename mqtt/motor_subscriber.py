@@ -35,23 +35,6 @@ class MotorMqttSubscriber:
     # 메시지가 도착했을 때 자동으로 호출되는 콜백함수
     def __on_message(self, client, userdata, message):
 
-        # self.status = str(message.payload, encoding='UTF-8')
-        if message.topic == '/Control/Motor/Controller/Accel':
-            # message = str(message.payload, encoding='UTF-8')
-            message = str(message.payload, encoding='UTF-8').split(':', -1)
-            axesValue = abs(float(message[1]))
-
-            self.motorspeed = int(4000 * axesValue)
-            print(self.motorspeed)
-            self.dcMotorR.setSpeed(self.motorspeed)
-            self.dcMotorL.setSpeed(self.motorspeed)
-            self.dcMotorR.forword()
-            self.dcMotorL.forword()
-
-
-            # 싱글톤 객체에 속도 정보 저장
-            self.singletonSpeed.set_speed(self.motorspeed)
-
         if message.topic == '/Control/Motor':
             print(str(message.payload, encoding='UTF-8'))
             if str(message.payload, encoding='UTF-8') == 'accel':
@@ -67,8 +50,8 @@ class MotorMqttSubscriber:
                         self.motorspeed = 4000
                     self.dcMotorR.setSpeed(self.motorspeed)
                     self.dcMotorL.setSpeed(self.motorspeed)
-                    self.dcMotorR.forword()
-                    self.dcMotorL.forword()
+                    self.dcMotorR.forward()
+                    self.dcMotorL.forward()
                 
                 # 싱글톤 객체에 속도 정보 저장
                 self.singletonSpeed.set_speed(self.motorspeed)
@@ -86,8 +69,8 @@ class MotorMqttSubscriber:
                 # self.dcMotorL.setSpeed(self.motorspeed)
 
                 if self.motorspeed < 0:
-                    self.dcMotorR.backword()
-                    self.dcMotorL.backword()
+                    self.dcMotorR.backward()
+                    self.dcMotorL.backward()
                     self.motorspeed -= 5
                     if self.motorspeed < -4000:
                         self.motorspeed = -4000

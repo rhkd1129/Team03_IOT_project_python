@@ -17,11 +17,11 @@ class DCMotor():
     def setSpeed(self, step):
         self.__pca9685.write(self.__pwm, step)
 
-    def forword(self):
+    def forward(self):
         GPIO.output(self.__IN1, GPIO.HIGH)
         GPIO.output(self.__IN2, GPIO.LOW)
 
-    def backword(self):
+    def backward(self):
         GPIO.output(self.__IN1, GPIO.LOW)
         GPIO.output(self.__IN2, GPIO.HIGH)
 

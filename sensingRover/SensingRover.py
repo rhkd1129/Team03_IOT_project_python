@@ -10,6 +10,7 @@ from mqtt.camera_publisher import ImageMqttPublisher
 # 발행(Publish)과 동시에 구독(Subscribe)을 하기위한 Subscriber 클래스 import
 from mqtt.subscriber import MqttSubscriber
 from mqtt.motor_subscriber import MotorMqttSubscriber
+from mqtt.controller_subscriber import ControllerMqttSubscriber
 
 # Sensor 값을 받아 오기 위한 클래스 import
 from gpio.Buzzer import ActiveBuzzer
@@ -145,10 +146,12 @@ if __name__ == "__main__":
     # 구독을 위한 객체 생성
     mqttSubscriber = MqttSubscriber('192.168.3.163', topic='/Control/#')
     motorMqttSubscriber = MotorMqttSubscriber('192.168.3.163', topic='/Control/#')
+    controllerMqttSubscriber = ControllerMqttSubscriber('192.168.3.163', topic='/Controller/#')
 
     # 구독 객체의 start 메소드 호출하여 구독 시작
     mqttSubscriber.start()
     motorMqttSubscriber.start()
+    controllerMqttSubscriber.start()
 
     # publish 메소드 호출하여 메시지 발행
     sr.publish()
