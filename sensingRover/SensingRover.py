@@ -22,7 +22,7 @@ from gpio.Pca9685 import Pca9685
 from gpio.Pcf8591 import Pcf8591
 from gpio.Photoresister import Photoresister
 from gpio.RgbLed import RgbLed
-from gpio.Sg90 import Sg90
+#from gpio.Sg90 import Sg90
 from gpio.Thermistor import Thermistor
 from gpio.Tracking import Tracking
 
@@ -37,20 +37,13 @@ class SensingRover:
     # pubTopic : 발행할 메시지를 담을 Topic 설정, 디렉토리(혹은 자바에서 패키지)와 비슷한 개념이라고 생각하면 이해하기 쉬움
     def __init__(self, brokerIp, brokerPort, pubTopic):
         # 센서 값을 받아오기 위해 각각의 객체를 생성하고, Pin 번호도 동시에 설정
-        self.buzzer = ActiveBuzzer(35)
+
         self.pca9685 = Pca9685()
         self.pcf8591 = Pcf8591(0x48)
-        self.dcMotorL = DCMotor(IN1=11, IN2=12, pca9685=self.pca9685, pwm=5)
-        self.dcMotorR = DCMotor(IN1=15, IN2=13, pca9685=self.pca9685, pwm=4)
         self.gas = Gas(self.pcf8591, ain=2)
         self.hcsr04 = HcSr04(trigpin=38, echopin=40)
-        self.laser = Laser(sig=37)
-        self.lcd1602 = Lcd1602(0x27)
         self.thermistor = Thermistor(self.pcf8591, 1)
         self.photoresister = Photoresister(self.pcf8591, ain=0)
-        self.rgbLed = RgbLed(redpin=16, greenpin=18, bluepin=22)
-        self.sg90direction = Sg90(self.pca9685, channel=15)
-        self.sg90neck = Sg90(self.pca9685, channel=14)
         self.tracking = Tracking(Tracking=36)
 
         # SensorRover 객체 생성 시 받아온 값을 클래스 내에서 사용하기 위한 선언
@@ -159,7 +152,3 @@ if __name__ == "__main__":
 
     # publish 메소드 호출하여 메시지 발행
     sr.publish()
-
-
-
-
