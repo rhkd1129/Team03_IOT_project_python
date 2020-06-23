@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 import time
+from gpio.Buzzer import ActiveBuzzer
 
 class HcSr04:
     def __init__(self, trigpin=None, echopin=None):
@@ -9,6 +10,7 @@ class HcSr04:
         GPIO.setwarnings(False)
         GPIO.setup(trigpin, GPIO.OUT)
         GPIO.setup(echopin, GPIO.IN)
+        self.buzzer = ActiveBuzzer(35)
 
     def distance(self):
         # trigger pin High, 10마이크로초 동안 유지
@@ -36,6 +38,11 @@ class HcSr04:
         # 거리 계산(단위: cm)
         during = stopTime - startTime
         dist = during * (343 / 2) * 100
+
+        if dist < 10:
+            self.buzzer.on()
+            time.sleep(0.5)
+            self.buzzer.off()
 
         return dist
 
