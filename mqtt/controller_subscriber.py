@@ -20,10 +20,14 @@ class ControllerMqttSubscriber:
         self.dcMotorR = DCMotor(IN1=13, IN2=15, pca9685=self.pca9685, pwm=4)
         self.sg90direction = Sg90(self.pca9685, channel=15)
         self.sg90sensor = Sg90(self.pca9685, channel=14)
+        self.sg90camera_vertical = Sg90(self.pca9685, channel=13)
+        self.sg90camera_horizontal = Sg90(self.pca9685, channel=8)
         # 속도 정보가 저장되는 싱글톤 객체 생성
         self.singletonSpeed = SingletonSpeed()
         # 모터의 기본 속도 정의
         self.motorspeed = 0
+        self.camera_angle_vertical = 10
+        self.camera_angle_horizontal = 70
         self.direction_angle = 90
         self.sensor_angle = 70
 
@@ -76,6 +80,34 @@ class ControllerMqttSubscriber:
             sensor_angle = int(30 * axesValue + 70)
 
             self.sg90sensor.angle(sensor_angle)
+
+        if message.topic == '/Controller/Camera/Direction':
+            message = str(message.payload, encoding='UTF-8').split(':', -1)
+            axesValue = round(float(message[1]),1)
+
+            if axesValue == 0.1 or axesValue == 0.4 or axesValue == -0.1 :
+                self.camera_angle_vertical -= 4
+                if self.camera_angle_vertical < 0:
+                    self.camera_angle_vertical = 0
+                self.sg90camera_vertical.angle(self.camera_angle_vertical)  #아래
+
+            if axesValue == -1.0 or axesValue == 1.0 or axesValue == -0.7:
+                self.camera_angle_vertical += 4
+                if self.camera_angle_vertical > 120:
+                    self.camera_angle_vertical = 120
+                self.sg90camera_vertical.angle(self.camera_angle_vertical) #위
+
+            if axesValue == -0.4 or axesValue == -0.1 or axesValue == -7.0:
+                self.camera_angle_horizontal -= 4
+                if self.camera_angle_horizontal < 10:
+                    self.camera_angle_horizontal = 10
+                self.sg90camera_horizontal.angle(self.camera_angle_horizontal) #오른쪽
+
+            if axesValue == 0.7 or axesValue == 0.4 or axesValue == 1.0:
+                self.camera_angle_horizontal += 4
+                if self.camera_angle_horizontal > 170:
+                    self.camera_angle_horizontal = 170
+                self.sg90camera_horizontal.angle(self.camera_angle_horizontal) #왼쪽
 
 
 
