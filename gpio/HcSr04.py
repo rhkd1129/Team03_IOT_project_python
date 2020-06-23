@@ -44,6 +44,8 @@ class HcSr04:
             time.sleep(0.5)
             self.buzzer.off()
 
+        dist = round(dist, 2)
+
         return dist
 
 #########################################################

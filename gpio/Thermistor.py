@@ -21,7 +21,7 @@ class Thermistor:
         temp = 1 / (((math.log(temp/10000)) / 3950) + (1 / (273.15+25)))
         tempSet= temp-273.15
         temperature = round(tempSet, 3)
-        return tempSet
+        return temperature
 
 
 #################################################

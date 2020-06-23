@@ -45,7 +45,7 @@ class MotorMqttSubscriber:
                     self.dcMotorR.setSpeed(abs(self.motorspeed))
                     self.dcMotorL.setSpeed(abs(self.motorspeed))
                 else:
-                    self.motorspeed += 50
+                    self.motorspeed += 5
                     if self.motorspeed > 4000:
                         self.motorspeed = 4000
                     self.dcMotorR.setSpeed(self.motorspeed)
@@ -71,7 +71,7 @@ class MotorMqttSubscriber:
                 if self.motorspeed < 0:
                     self.dcMotorR.backword()
                     self.dcMotorL.backword()
-                    self.motorspeed -= 100
+                    self.motorspeed -= 5
                     if self.motorspeed < -4000:
                         self.motorspeed = -4000
 
