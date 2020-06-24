@@ -13,17 +13,11 @@ from mqtt.motor_subscriber import MotorMqttSubscriber
 from mqtt.controller_subscriber import ControllerMqttSubscriber
 
 # Sensor 값을 받아 오기 위한 클래스 import
-from gpio.Buzzer import ActiveBuzzer
-from gpio.DCMotor import DCMotor
 from gpio.Gas import Gas
 from gpio.HcSr04 import HcSr04
-from gpio.Laser import Laser
-from gpio.Lcd1602 import Lcd1602
 from gpio.Pca9685 import Pca9685
 from gpio.Pcf8591 import Pcf8591
 from gpio.Photoresister import Photoresister
-from gpio.RgbLed import RgbLed
-#from gpio.Sg90 import Sg90
 from gpio.Thermistor import Thermistor
 from gpio.Tracking import Tracking
 

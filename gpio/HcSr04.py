@@ -39,10 +39,10 @@ class HcSr04:
         during = stopTime - startTime
         dist = during * (343 / 2) * 100
 
-        if dist < 10:
-            self.buzzer.on()
-            time.sleep(0.5)
-            self.buzzer.off()
+        # if dist < 10:
+        #     self.buzzer.on()
+        #     time.sleep(0.5)
+        #     self.buzzer.off()
 
         dist = round(dist, 1)
 
