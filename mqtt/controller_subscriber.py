@@ -51,26 +51,42 @@ class ControllerMqttSubscriber:
     def __on_message(self, client, userdata, message):
 
         # self.status = str(message.payload, encoding='UTF-8')
+        if message.topic == '/Controller/Move/Speed':  # 모터 속도 설정
+            message = str(message.payload, encoding='UTF-8').split(':', -1)
+            axesValue = float(message[1]) * -1  # 컨트롤러 9번 값 받아와서(-1 ~ 1)
+            self.motorspeed = 2000 + int(
+                2000 * axesValue)  # 9번 값을 2000 곱한다음 2000에 더한다 = (-1 ~ 1) * 2000 + 2000 =(0 ~ 4000) 설정됨
+
         if message.topic == '/Controller/Move/Forward':
             message = str(message.payload, encoding='UTF-8').split(':', -1)
             axesValue = abs(float(message[1]))
 
-            self.motorspeed = int(4000 * axesValue**2)
+            axesCalValue = int(4000 * axesValue ** 2)
+            if axesCalValue > self.motorspeed:
+                self.motorspeed = self.motorspeed
+            else:
+                self.motorspeed = axesCalValue
             self.dcMotorR.setSpeed(self.motorspeed)
             self.dcMotorL.setSpeed(self.motorspeed)
             self.dcMotorR.forward()
             self.dcMotorL.forward()
+            print(self.motorspeed)
             self.singletonSpeed.set_speed(self.motorspeed)
 
         if message.topic == '/Controller/Move/Backward':
             message = str(message.payload, encoding='UTF-8').split(':', -1)
             axesValue = abs(float(message[1]))
 
-            self.motorspeed = int(4000 * axesValue**2)
+            axesCalValue = int(4000 * axesValue ** 2)
+            if axesCalValue > self.motorspeed:
+                self.motorspeed = self.motorspeed
+            else:
+                self.motorspeed = axesCalValue
             self.dcMotorR.setSpeed(self.motorspeed)
             self.dcMotorL.setSpeed(self.motorspeed)
             self.dcMotorR.backward()
             self.dcMotorL.backward()
+            print(self.motorspeed)
             self.singletonSpeed.set_speed(self.motorspeed)
 
         if message.topic == '/Controller/Move/Stop':
