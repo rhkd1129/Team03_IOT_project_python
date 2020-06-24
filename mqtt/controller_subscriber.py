@@ -66,6 +66,13 @@ class ControllerMqttSubscriber:
             self.dcMotorL.backward()
             self.singletonSpeed.set_speed(self.motorspeed)
 
+        if message.topic == '/Controller/Move/Stop':
+            self.motorspeed = 0
+            self.dcMotorR.setSpeed(self.motorspeed)
+            self.dcMotorL.setSpeed(self.motorspeed)
+
+            self.singletonSpeed.set_speed(self.motorspeed)
+
         if message.topic == '/Controller/Move/Direction':
             message = str(message.payload, encoding='UTF-8').split(':', -1)
             axesValue = float(message[1])

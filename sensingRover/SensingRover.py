@@ -145,6 +145,8 @@ if __name__ == "__main__":
 
     # 구독을 위한 객체 생성
     mqttSubscriber = MqttSubscriber('192.168.3.163', topic='/Control/#')
+    mqttSubscriber.laser.off()
+    mqttSubscriber.laser2.off()
     motorMqttSubscriber = MotorMqttSubscriber('192.168.3.163', topic='/Control/#')
     controllerMqttSubscriber = ControllerMqttSubscriber('192.168.3.163', topic='/Controller/#')
 
