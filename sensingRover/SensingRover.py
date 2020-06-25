@@ -11,6 +11,7 @@ from mqtt.camera_publisher import ImageMqttPublisher
 from mqtt.subscriber import MqttSubscriber
 from mqtt.motor_subscriber import MotorMqttSubscriber
 from mqtt.controller_subscriber import ControllerMqttSubscriber
+from mqtt.music_subscriber import MusicMqttSubscriber
 
 # Sensor 값을 받아 오기 위한 클래스 import
 from gpio.Gas import Gas
@@ -84,7 +85,6 @@ class SensingRover:
 
     # 연결한 mqtt broker로 메시지 발행(Publish)
     def publish(self):
-
         # mqtt 연결이 정상적으로 이뤄지지 않아서 client 객체가 생성되지 않았을 경우 해당 메소드를 빠져나간다.
         if self.client is None:
             return
@@ -140,10 +140,11 @@ if __name__ == "__main__":
 
     # 구독을 위한 객체 생성
     mqttSubscriber = MqttSubscriber('192.168.3.163', topic='/Control/#')
-    mqttSubscriber.laser.off()
-    mqttSubscriber.laser2.off()
+    # mqttSubscriber.laser.off()
+    # mqttSubscriber.laser2.off()
     motorMqttSubscriber = MotorMqttSubscriber('192.168.3.163', topic='/Control/#')
     controllerMqttSubscriber = ControllerMqttSubscriber('192.168.3.163', topic='/Controller/#')
+
 
     # 구독 객체의 start 메소드 호출하여 구독 시작
     mqttSubscriber.start()

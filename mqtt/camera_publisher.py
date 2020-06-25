@@ -2,6 +2,9 @@ import cv2
 import paho.mqtt.client as mqtt
 import threading
 import base64
+import numpy as np
+from datetime import datetime
+import time
 
 class ImageMqttPublisher:
 
@@ -83,6 +86,7 @@ class ImageMqttPublisher:
             else:
                 break
 
+
 if __name__ == '__main__':
     videoCapture = cv2.VideoCapture(0)
     videoCapture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
@@ -97,7 +101,7 @@ if __name__ == '__main__':
             if not retval:
                 print('video capture fail')
                 break
-            imageMqttPublisher.sendBase64(frame)
+            imageMqttPublisher.sendBase64()
 
         else:
             break

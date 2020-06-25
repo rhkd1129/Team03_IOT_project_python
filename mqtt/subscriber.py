@@ -1,4 +1,8 @@
 import paho.mqtt.client as mqtt
+import cv2
+import time
+from datetime import datetime
+import numpy as np
 import threading
 from gpio.RgbLed import RgbLed
 from gpio.Pca9685 import Pca9685
@@ -50,6 +54,7 @@ class MqttSubscriber:
     def __on_message(self, client, userdata, message):
         # self.status = str(message.payload, encoding='UTF-8')
         # 각각의 토픽에 따라 메시지 내용 처리방식
+        # print(str(message.payload, encoding='UTF-8'))
         if message.topic == '/Control/RgbLed':
             if str(message.payload, encoding='UTF-8') == 'ledOn':
                 self.rgbLed.red()
@@ -135,6 +140,13 @@ class MqttSubscriber:
 
             self.lcd1602.write(0, 0, 'Received Message')
             self.lcd1602.write(0, 1, '>'+received_message)
+
+        if message.topic == '/Control/imagecapture':
+            videoCapture = cv2.VideoCapture(0)
+            if videoCapture.isOpened():
+                retval, frame = videoCapture.read()
+                img = np.copy(frame)
+                cv2.imwrite("C:/Temp" + str(datetime.now()) + ".jpg", img)
 
     # subscribe 메소드를 스레드방식으로 시작하는 메소드
     def start(self):

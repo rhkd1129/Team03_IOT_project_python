@@ -14,7 +14,12 @@ class Gas:
 
     def read(self):
         value = self.__pcf8591.read(self.__ain)
-        
+        if value > 205:
+            self.buzzer.on()
+            self.rgbLed.red()
+        else:
+            self.buzzer.off()
+            self.rgbLed.off()
         return value
 
 if __name__ == '__main__':

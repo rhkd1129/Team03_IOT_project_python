@@ -1,3 +1,4 @@
+import RPi.GPIO as GPIO
 import paho.mqtt.client as mqtt
 import threading
 from gpio.DCMotor import DCMotor
@@ -7,6 +8,7 @@ from gpio.Buzzer import ActiveBuzzer
 from mqtt.singleton import SingletonSpeed
 from gpio.Sg90 import Sg90
 from gpio.RgbLed import RgbLed
+from gpio.Mbuzzer import MusicBuzzer
 
 # Motor와 관련된 메시지를 구독하기 위한 클래스
 class ControllerMqttSubscriber:
@@ -37,7 +39,7 @@ class ControllerMqttSubscriber:
         self.laser2 = Laser(29)
         self.buzzer = ActiveBuzzer(35)
         self.rgbLed = RgbLed(redpin=16, greenpin=18, bluepin=22)
-
+        self.checkStatus = False
 
     # 연결 되었을 때 자동으로 호출되는 콜백함수
     def __on_connect(self, client, userdata, flags, rc):
@@ -71,7 +73,6 @@ class ControllerMqttSubscriber:
             self.dcMotorL.setSpeed(self.motorspeed)
             self.dcMotorR.forward()
             self.dcMotorL.forward()
-            print(self.motorspeed)
             self.singletonSpeed.set_speed(self.motorspeed)
 
         if message.topic == '/Controller/Move/Backward':
@@ -93,7 +94,6 @@ class ControllerMqttSubscriber:
             self.motorspeed = 0
             self.dcMotorR.setSpeed(self.motorspeed)
             self.dcMotorL.setSpeed(self.motorspeed)
-
             self.singletonSpeed.set_speed(self.motorspeed)
 
         if message.topic == '/Controller/Move/Direction':
