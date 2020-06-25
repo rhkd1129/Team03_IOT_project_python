@@ -36,15 +36,16 @@ class MotorMqttSubscriber:
     def __on_message(self, client, userdata, message):
 
         if message.topic == '/Control/Motor':
+            print(str(message.payload, encoding='UTF-8'))
             if str(message.payload, encoding='UTF-8') == 'accel':
                 # 현재 후진 상태일 경우 점점 속도를 줄여 0에 가까워 짐
                 if self.motorspeed < 0:
-                    self.motorspeed += 50
+                    self.motorspeed += 100
                     # 후진 상태의 경우 속도가 음수이므로 절대값을 씌워서 setSpeed 메소드의 매개값으로 사용
                     self.dcMotorR.setSpeed(abs(self.motorspeed))
                     self.dcMotorL.setSpeed(abs(self.motorspeed))
                 else:
-                    self.motorspeed += 50
+                    self.motorspeed += 5
                     if self.motorspeed > 4000:
                         self.motorspeed = 4000
                     self.dcMotorR.setSpeed(self.motorspeed)
@@ -70,7 +71,7 @@ class MotorMqttSubscriber:
                 if self.motorspeed < 0:
                     self.dcMotorR.backward()
                     self.dcMotorL.backward()
-                    self.motorspeed -= 50
+                    self.motorspeed -= 5
                     if self.motorspeed < -4000:
                         self.motorspeed = -4000
 
@@ -78,7 +79,7 @@ class MotorMqttSubscriber:
                     self.dcMotorR.setSpeed(abs(self.motorspeed))
                     self.dcMotorL.setSpeed(abs(self.motorspeed))
                 else:
-                    self.motorspeed -= 50
+                    self.motorspeed -= 100
                     self.dcMotorR.setSpeed(self.motorspeed)
                     self.dcMotorL.setSpeed(self.motorspeed)
 

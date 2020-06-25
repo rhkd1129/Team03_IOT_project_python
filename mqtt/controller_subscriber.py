@@ -2,10 +2,10 @@ import paho.mqtt.client as mqtt
 import threading
 from gpio.DCMotor import DCMotor
 from gpio.Pca9685 import Pca9685
-from mqtt.singleton import SingletonSpeed
-from gpio.Sg90 import Sg90
 from gpio.Laser import Laser
 from gpio.Buzzer import ActiveBuzzer
+from mqtt.singleton import SingletonSpeed
+from gpio.Sg90 import Sg90
 from gpio.RgbLed import RgbLed
 
 # Motor와 관련된 메시지를 구독하기 위한 클래스
@@ -33,10 +33,11 @@ class ControllerMqttSubscriber:
         self.camera_angle_horizontal = 70
         self.direction_angle = 90
         self.sensor_angle = 70
-        self.laser = Laser(37)
+        self.laser1 = Laser(37)
         self.laser2 = Laser(29)
         self.buzzer = ActiveBuzzer(35)
         self.rgbLed = RgbLed(redpin=16, greenpin=18, bluepin=22)
+
 
     # 연결 되었을 때 자동으로 호출되는 콜백함수
     def __on_connect(self, client, userdata, flags, rc):
@@ -86,7 +87,6 @@ class ControllerMqttSubscriber:
             self.dcMotorL.setSpeed(self.motorspeed)
             self.dcMotorR.backward()
             self.dcMotorL.backward()
-            print(self.motorspeed)
             self.singletonSpeed.set_speed(self.motorspeed)
 
         if message.topic == '/Controller/Move/Stop':
@@ -141,10 +141,10 @@ class ControllerMqttSubscriber:
 
         if message.topic == '/Controller/Laser':
             if str(message.payload, encoding='UTF-8') == 'on':
-                self.laser.on()
+                self.laser1.on()
                 self.laser2.on()
             elif str(message.payload, encoding='UTF-8') == 'off':
-                self.laser.off()
+                self.laser1.off()
                 self.laser2.off()
 
         if message.topic == '/Controller/Buzzer':

@@ -3,6 +3,7 @@ from gpio.Pca9685 import Pca9685
 from gpio.HcSr04 import HcSr04
 import time
 
+
 class DCMotor():
     def __init__(self, IN1, IN2, pca9685, pwm, frequency = 50):
         self.__IN1 = IN1

@@ -74,7 +74,6 @@ class MqttSubscriber:
                 if self.camera_angle_horizontal< 10:
                     self.camera_angle_horizontal = 10
                 self.sg90camera_horizontal.angle(self.camera_angle_horizontal)
-
             elif str(message.payload, encoding='UTF-8') == 'left':
                 self.camera_angle_horizontal += 4
                 if self.camera_angle_horizontal > 170:

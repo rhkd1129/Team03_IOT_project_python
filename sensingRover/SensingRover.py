@@ -18,6 +18,7 @@ from gpio.HcSr04 import HcSr04
 from gpio.Pca9685 import Pca9685
 from gpio.Pcf8591 import Pcf8591
 from gpio.Photoresister import Photoresister
+#from gpio.Sg90 import Sg90
 from gpio.Thermistor import Thermistor
 from gpio.Tracking import Tracking
 

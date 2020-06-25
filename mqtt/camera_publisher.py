@@ -10,7 +10,6 @@ class ImageMqttPublisher:
     # brokerPort : brokerIp로 접속할때 필요한 port 번호
     # pubTopic : 발행할 메시지를 담을 Topic 설정, 디렉토리(혹은 자바에서 패키지)와 비슷한 개념이라고 생각하면 이해하기 쉬움
     def __init__(self, brokerIp, brokerPort, pubTopic):
-
         self.brokerIp = brokerIp
         self.brokerPort = brokerPort
         self.pubTopic = pubTopic
